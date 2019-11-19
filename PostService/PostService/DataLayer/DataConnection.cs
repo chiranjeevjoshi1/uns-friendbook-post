@@ -1,4 +1,5 @@
-﻿using PostService.Models;
+﻿using MongoDB.Driver;
+using PostService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,10 @@ namespace PostService.DataLayer
         public List<Post> GetUserPost()
         {
             List<Post> data = new List<Post>();
-
+            var connectionString = "mongodb://localhost:27017";
+            var client = new MongoClient(connectionString);
+            IMongoDatabase db = client.GetDatabase("mongodb");
+            var dblist = db.ListCollections().ToList();
             return data;
         }
         public Post AddPost(UserToken userToken)
