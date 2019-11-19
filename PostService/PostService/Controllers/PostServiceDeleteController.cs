@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PostService.DataLayer;
 using PostService.Models;
 
 namespace PostService.Controllers
@@ -16,8 +17,21 @@ namespace PostService.Controllers
         [HttpDelete]
         public ActionResult Delete([FromBody] UserToken userToken)
         {
-            ObjectResult objectResult = new ObjectResult(userToken);
-            return objectResult;
+            try
+            {
+                DataConnection dataConnection = new DataConnection();
+                dataConnection.DeletePost(userToken);
+
+                ObjectResult objectResult = new ObjectResult("OK");
+                objectResult.StatusCode = 200;
+                return objectResult;
+            }
+            catch (Exception )
+            {
+                ObjectResult objectResult = new ObjectResult("Forbidden");
+                objectResult.StatusCode = 403;
+                return objectResult;
+            }
         }
     }
 }
