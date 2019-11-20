@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<Posts>
+  <Post>
+    <Postid>0</Postid>
+    <Userid>string</Userid>
+    <Content>string</Content>
+    <TimeStamp>11/20/2019 9:39:31 AM</TimeStamp>
+  </Post>
+</Posts>

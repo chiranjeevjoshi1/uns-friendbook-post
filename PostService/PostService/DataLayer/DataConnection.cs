@@ -30,11 +30,38 @@ namespace PostService.DataLayer
             {
                 data = new Post();
                 DateTime dataTime = DateTime.Now;
-                var connectionString = "mongodb://localhost:27017";
-                var client = new MongoClient(connectionString);
-                IMongoDatabase db = client.GetDatabase("mongodb");
-                var collection = db.GetCollection<Post>("posts");
-                collection.InsertOne(new Post { Postid = "1", Content = userToken.Content, Timestamp = dataTime.ToString() });
+                //var connectionString = "mongodb://localhost:27017";
+                //var client = new MongoClient(connectionString);
+                //IMongoDatabase db = client.GetDatabase("mongodb");
+                //var collection = db.GetCollection<Post>("posts");
+                //collection.InsertOne(new Post { Postid = "1", Content = userToken.Content, Timestamp = dataTime.ToString() });
+
+                DataSet originalDataSet = new DataSet("Posts");
+                //originalDataSet.ReadXml(Directory.GetCurrentDirectory() + @"/DataLayer/PostData.xml");
+                DataTable table = new DataTable("Post");
+                DataColumn postidColumn = new DataColumn("Postid",
+                    Type.GetType("System.Int32"));
+                postidColumn.AutoIncrement = true;
+
+                DataColumn useridColumn = new DataColumn("Userid");
+                DataColumn contentColumn = new DataColumn("Content");
+                DataColumn timeStampColumn = new DataColumn("TimeStamp");
+                table.Columns.Add(postidColumn);
+                table.Columns.Add(useridColumn);
+                table.Columns.Add(contentColumn);
+                table.Columns.Add(timeStampColumn);
+
+                originalDataSet.Tables.Add(table);
+                // Add ten rows.
+
+                DataRow newRow = table.NewRow();
+                newRow["Userid"] = userToken.Userid;
+                newRow["Content"] = userToken.Content;
+                newRow["TimeStamp"] = dataTime.ToString();
+                table.Rows.Add(newRow);
+               
+                originalDataSet.AcceptChanges();
+                originalDataSet.WriteXml(Directory.GetCurrentDirectory() + @"/DataLayer/PostData.xml");
 
             }
 
@@ -47,11 +74,43 @@ namespace PostService.DataLayer
             {
                 data = new Post();
                 DateTime dataTime = DateTime.Now;
-                var connectionString = "mongodb://localhost:27017";
-                var client = new MongoClient(connectionString);
-                IMongoDatabase db = client.GetDatabase("mongodb");
-                var collection = db.GetCollection<Post>("posts");
-                //collection.UpdateOne(new Post { Postid = "1", Content = userToken.Content, Timestamp = dataTime.ToString() });
+                //var connectionString = "mongodb://localhost:27017";
+                //var client = new MongoClient(connectionString);
+                //IMongoDatabase db = client.GetDatabase("mongodb");
+                //var collection = db.GetCollection<Post>("posts");
+                ////collection.UpdateOne(new Post { Postid = "1", Content = userToken.Content, Timestamp = dataTime.ToString() });
+
+                DataSet originalDataSet = new DataSet("Posts");
+                //originalDataSet.ReadXml(Directory.GetCurrentDirectory() + @"/DataLayer/PostData.xml");
+                DataTable table = new DataTable("Post");
+                DataColumn postidColumn = new DataColumn("Postid",
+                    Type.GetType("System.Int32"));
+                postidColumn.AutoIncrement = true;
+
+                DataColumn useridColumn = new DataColumn("Userid");
+                DataColumn contentColumn = new DataColumn("Content");
+                DataColumn timeStampColumn = new DataColumn("TimeStamp");
+                table.Columns.Add(postidColumn);
+                table.Columns.Add(useridColumn);
+                table.Columns.Add(contentColumn);
+                table.Columns.Add(timeStampColumn);
+
+                originalDataSet.Tables.Add(table);
+                // Add ten rows.
+
+                DataRow newRow = table.NewRow();
+                newRow["Userid"] = userToken.Userid;
+                newRow["Content"] = userToken.Content;
+                newRow["TimeStamp"] = dataTime.ToString();
+                table.Rows.Add(newRow);
+
+                originalDataSet.AcceptChanges();
+
+                DataSet oldDataSet = new DataSet("Posts");
+                oldDataSet.ReadXml(Directory.GetCurrentDirectory() + @"/DataLayer/PostData.xml");
+                originalDataSet.Merge(oldDataSet);
+
+                originalDataSet.WriteXml(Directory.GetCurrentDirectory() + @"/DataLayer/PostData.xml");
             }
 
             return data;
